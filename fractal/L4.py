@@ -1,4 +1,5 @@
 import turtle
+from random import randrange
 
 
 class L4:
@@ -44,6 +45,7 @@ class L4:
         print(self.get_gen(gen))
         pen.left(90)
         for ch in self.get_gen(gen):
+            angle = randrange(20, 30)
             if ch == self.ch2:
                 pen.forward(step)
             elif ch == '+':
