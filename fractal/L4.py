@@ -16,13 +16,13 @@ class L4:
         self.pen.speed(0)
         self.pen.hideturtle()
         self.pen.penup()
-        self.pen.setpos(0, -self.height // 2 - 200)
+        self.pen.setpos(0, -self.height // 2)
         self.pen.pendown()
-        self.pen.color('orange')
+        self.pen.color('green')
         turtle.hideturtle()
         # l-system settings
-        self.ch1, self.ch2 = 'X', 'F'
-        self.rules = {self.ch1: 'F[+X]F[-X]+X', self.ch2: 'FF'}
+        self.ch1 = 'X'
+        self.rules = {self.ch1: 'F[@[-X]+X]'}
         self.stack = []
 
     def apply_rule(self, axiom):
@@ -35,28 +35,34 @@ class L4:
         return axiom
 
     def run(self):
-        step, angle = 2, 30
+        step, angle, color, thickness = 80, lambda: randrange(10, 45), (0.2, 0.2, 0.0), 20
+        gen = 10
         turtle.color('white')
         turtle.goto(-self.width // 2 + 50, -self.height // 2 + 50)
         turtle.clear()
-        gen = 8
         turtle.write(f'gen: {gen}', font=('arial', 20, 'normal'))
         pen = self.pen
         print(self.get_gen(gen))
         pen.left(90)
         for ch in self.get_gen(gen):
-            angle = randrange(20, 30)
-            if ch == self.ch2:
+            pen.pensize(thickness)
+            pen.color(color)
+            if ch in ['F', 'X']:
                 pen.forward(step)
+            elif ch == '@':
+                step -= 6
+                color = (color[0], color[1] + 0.04, color[2])
+                thickness -= 2
+                thickness = max(1, thickness)
             elif ch == '+':
-                pen.right(angle)
+                pen.right(angle())
             elif ch == '-':
-                pen.left(angle)
+                pen.left(angle())
             elif ch == '[':
                 a, p = pen.heading(), pen.pos()
-                self.stack.append((a, p))
+                self.stack.append((a, p, step, color, thickness))
             elif ch == ']':
-                a, p = self.stack.pop()
+                a, p, step, color, thickness = self.stack.pop()
                 pen.setheading(a)
                 pen.penup()
                 pen.goto(p)
