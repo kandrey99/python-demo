@@ -35,8 +35,8 @@ class L4:
         return axiom
 
     def run(self):
-        step, angle, color, thickness = 80, lambda: randrange(10, 45), (0.2, 0.2, 0.0), 20
-        gen = 10
+        step, angle, color, thickness = 80, lambda: randrange(10, 45), (0.2, 0.2, 0.0), 30
+        gen = 12
         turtle.color('white')
         turtle.goto(-self.width // 2 + 50, -self.height // 2 + 50)
         turtle.clear()
@@ -50,9 +50,9 @@ class L4:
             if ch in ['F', 'X']:
                 pen.forward(step)
             elif ch == '@':
-                step -= 6
+                step -= 5
                 color = (color[0], color[1] + 0.04, color[2])
-                thickness -= 2
+                thickness -= 3
                 thickness = max(1, thickness)
             elif ch == '+':
                 pen.right(angle())
